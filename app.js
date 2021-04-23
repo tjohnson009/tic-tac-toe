@@ -3,29 +3,53 @@ const boardspaces = Array.from(document.querySelectorAll(".boardspace"));
 const gameboard = document.querySelector('#gameboard'); 
 const possibleWins = [
   [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
+  [0, 4, 8],
   [0, 3, 6],
   [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
   [2, 4, 6],
+  [2, 5, 8],
+  [3, 4, 5],
+  [6, 7, 8],
 ];
 let turn = 1; // placeholder for testing
 
+function declareWinner(result) {
+  // stop play
+  //render winning message and offer restart
+
+}; 
+
 function checkAgainstWinningCombos(array) {
+  //only run if x array has 3 or more elements
+  if (array.length >= 3) {
+    //loop through all winning combos
+    for (let i = 0; i < possibleWins.length; i++) {
+      //check if the xArray contains every element in the winning combo
+     let result = possibleWins[i].every(el => {
+        return array.includes(el); 
+      })
+
+      if (result) {
+        console.log('We have a match!'); 
+        return result; 
+      }
+      // return result; 
+    }
+  }
+  //check each possible win against the x array for an exact match
+    //if not, check the oArray
+  //check each possible win against the o array
   //map out the matches in arr
-  //loop through all winning combos
   // filter the results that don't match 
+  // if there is a winner run declareWinner function
 }
 
 function xWin() {
-  let win = false; 
   let currentXSpaces = boardspaces.map((div) => {
       return div.children[0].classList.contains("chosen-x");
     });
 
-    console.log(currentXSpaces, "X spaces"); 
+    // console.log(currentXSpaces, "X spaces"); 
     let xArray = currentXSpaces.map((el, i) => {
         if (el === true) {
           return i;
@@ -37,76 +61,39 @@ function xWin() {
         return el !== -1;
       });
 
-    console.log(xArray); 
+    console.log(`Current X Array: [${xArray}]`); 
 
-    // checkAgainstWinningCombos(xArray); 
-  if (win === true) {
-
-  } else {
-  
-  }; 
+    checkAgainstWinningCombos(xArray); 
 
 }; 
 
 function oWin() {
-  let win = false;
-  if (win === true) {
-  
-  } else {
-
-  }
+    let currentOSpaces = boardspaces.map((div) => {
+      return div.children[0].classList.contains("chosen-o");
+    });
+    // console.log(currentOSpaces, "O spaces."); 
+    
+    let oArray = currentOSpaces
+    .map((el, i) => {
+      if (el === true) {
+        return i;
+      } else {
+        return -1;
+      }
+    })
+    .filter((el) => {
+      return el !== -1;
+    });
+    
+    console.log(`Current O Array: [${oArray}]`); 
+    
+    checkAgainstWinningCombos(oArray); 
 }; 
 
 function checkForWins() {
-  // console.log('I checked for wins just now.'); 
-
-  //map method
-  let currentOSpaces = boardspaces.map((div) => {
-    return div.children[0].classList.contains('chosen-o'); 
-  }); 
-  console.log(currentOSpaces, 'O spaces.'); 
-
-  // let currentXSpaces = allSpaces.map((div) => {
-  //   return div.children[0].classList.contains('chosen-x'); 
-  // }); 
-  // console.log(currentXSpaces, 'X spaces'); 
+  // console.log('checking for wins now...')
   xWin();
   oWin(); 
-  //I need to try to loop over the X Array and O array and check if there is a true in the positions that match
-  //each winning array.
-  // let xArray = currentXSpaces.map((el, i) => {
-  //     if (el === true) {
-  //       return i; 
-  //       } else {
-  //         return -1; 
-  //       }
-  // })
-  // .filter(el => {
-  //   return el !== -1; 
-  // }); 
-  
-  // console.log(xArray); 
-
-  
-  // for (let i = 0; i < currentXSpaces.length; i++) {
-  //   // let xArray = []; 
-  //   if (currentXSpaces[i] === true) {
-  //    xArray.push(currentXSpaces.indexOf(currentXSpaces[i])); 
-  //   }
-  //   // console.log(xArray); 
-  //   // return xArray; 
-  // }
-
-  // xArray = currentXSpaces
-  //   .filter(el => el === true)
-  //   console.log(xArray);
-
-
-  
-
-
-  
-  
 }
 
 function switchTurns() {
