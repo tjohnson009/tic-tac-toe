@@ -11,7 +11,7 @@
   </head>
   <body>
     <div class="gameboard-container">
-    <div class="gameboard">
+    <div class="gameboard" id=gameboard>
       <div class="boardspace left-space top-space"><p class=boardspace-text id=p0></p>
       </div>
       <div class="boardspace middle-space top-space"><p class=boardspace-text id=p1></p>
@@ -40,6 +40,11 @@
     <label for="o-color-choice">O Color Choice: </label>
     <input type="color" id='o-color-choice' value='#10452c'/>
 </div>
+    
+    <div class="winning-message-container">
+      <div class='winning-message'></div>
+          <button id='play-again'>Play Again</button>
+    </div>
     
     <script src='./app.js'></script>
   </body>

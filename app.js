@@ -1,5 +1,6 @@
 // console.log('I am successfully running!');
 const boardspaces = Array.from(document.querySelectorAll(".boardspace"));
+const gameboard = document.querySelector('#gameboard'); 
 const possibleWins = [
   [0, 1, 2],
   [3, 4, 5],
@@ -12,16 +13,110 @@ const possibleWins = [
 ];
 let turn = 1; // placeholder for testing
 
+function checkAgainstWinningCOmbos(array) {
+  //map out the matches in arr
+  //loop through all winning combos
+  // filter the results that don't match 
+}
+
+function xWin() {
+  let win = false; 
+  let currentXSpaces = boardspaces.map((div) => {
+      return div.children[0].classList.contains("chosen-x");
+    });
+
+    console.log(currentXSpaces, "X spaces"); 
+    let xArray = currentXSpaces.map((el, i) => {
+        if (el === true) {
+          return i;
+        } else {
+          return -1;
+        }
+      })
+      .filter((el) => {
+        return el !== -1;
+      });
+
+    console.log(xArray); 
+  if (win === true) {
+
+  } else {
+  
+  }; 
+
+}; 
+
+function oWin() {
+  let win = false;
+  if (win === true) {
+  
+  } else {
+
+  }
+}; 
+
+function checkForWins() {
+  // console.log('I checked for wins just now.'); 
+
+  //map method
+  let currentOSpaces = boardspaces.map((div) => {
+    return div.children[0].classList.contains('chosen-o'); 
+  }); 
+  console.log(currentOSpaces, 'O spaces.'); 
+
+  // let currentXSpaces = allSpaces.map((div) => {
+  //   return div.children[0].classList.contains('chosen-x'); 
+  // }); 
+  // console.log(currentXSpaces, 'X spaces'); 
+  xWin();
+  oWin(); 
+  //I need to try to loop over the X Array and O array and check if there is a true in the positions that match
+  //each winning array.
+  // let xArray = currentXSpaces.map((el, i) => {
+  //     if (el === true) {
+  //       return i; 
+  //       } else {
+  //         return -1; 
+  //       }
+  // })
+  // .filter(el => {
+  //   return el !== -1; 
+  // }); 
+  
+  // console.log(xArray); 
+
+  
+  // for (let i = 0; i < currentXSpaces.length; i++) {
+  //   // let xArray = []; 
+  //   if (currentXSpaces[i] === true) {
+  //    xArray.push(currentXSpaces.indexOf(currentXSpaces[i])); 
+  //   }
+  //   // console.log(xArray); 
+  //   // return xArray; 
+  // }
+
+  // xArray = currentXSpaces
+  //   .filter(el => el === true)
+  //   console.log(xArray);
+
+
+  
+
+
+  
+  
+}
+
 function switchTurns() {
   let nextTurn;
   if (turn === 1) {
     nextTurn = 0;
-    console.log(nextTurn, "O it is your turn. ");
+    // console.log(nextTurn, "O it is your turn. ");
   } else if (turn === 0) {
     nextTurn = 1;
-    console.log(nextTurn, "X it is your turn.");
+    // console.log(nextTurn, "X it is your turn.");
   } else {
-    console.log("Something is wrong here...");
+    // console.log("Something is wrong here...");
   }
   return nextTurn;
 }
@@ -56,19 +151,20 @@ function selectSpace(event) {
 
   if (!paragraphClassList.contains('chosen')) {
       //disable the ability to click on a selected spot
-
-        //     //add the appropriate symbol to the chosen space and add a chosen class to the selected space
+     event.target.style.cursor = 'not-allowed';
+     //add the appropriate symbol to the chosen space and add a chosen class to the selected space
         renderSymbol(event);
-        //     //disable selecting that space again (changing the cursor)
         
-        //     //check for wins
-
-        } else {
-          console.log('That spot is already taken. Choose another.'); 
-          turn = switchTurns(); 
-          return turn; 
-        }
+      } else {
+        console.log('That spot is already taken. Choose another.'); 
+        turn = switchTurns(); 
         return turn; 
+      }
+      //     //disable selecting that space again (changing the cursor)
+
+      //     //check for wins
+      checkForWins(); 
+      return turn; 
 }
 
 function renderPotentialPlace(event) {  
@@ -156,8 +252,9 @@ boardspaces.forEach((space) => {
 
 });
 
+// COLOR PICKER INPUTS
 document
-  .querySelector("#x-color-choice")
+  .querySelector("#x-color-choice")             
   .addEventListener("change", updateInputValues);
 document
   .querySelector("#o-color-choice")

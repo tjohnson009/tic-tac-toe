@@ -22,11 +22,13 @@ root {
     place-items: center;
     width: 100vw;
     height: 80vh;
+    margin-bottom: 1rem;
 }
 
 .button-container {
-    margin: 0 auto;
     width: 100vw;
+    place-items: center;
+    text-align: center;
 }
 
 /* GAMEBOARD AND COMPONENTS */
