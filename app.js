@@ -13,7 +13,7 @@ const possibleWins = [
 ];
 let turn = 1; // placeholder for testing
 
-function checkAgainstWinningCOmbos(array) {
+function checkAgainstWinningCombos(array) {
   //map out the matches in arr
   //loop through all winning combos
   // filter the results that don't match 
@@ -38,6 +38,8 @@ function xWin() {
       });
 
     console.log(xArray); 
+
+    // checkAgainstWinningCombos(xArray); 
   if (win === true) {
 
   } else {
