@@ -97,3 +97,7 @@ root {
 .chosen-o {
     color: var(--O); 
 }
+
+.chosen {
+    cursor: not-allowed; 
+}

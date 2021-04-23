@@ -10,7 +10,7 @@ const possibleWins = [
   [0, 4, 8],
   [2, 4, 6],
 ];
-let turn = 0; // placeholder for testing
+let turn = 1; // placeholder for testing
 
 function switchTurns() {
   let nextTurn;
@@ -53,28 +53,25 @@ function renderSymbol(event) {
 function selectSpace(event) {
   // console.log(event);
   let paragraphClassList = event.target.children[0].classList;
-  // if (turn === 1) {
-    //disable the ability to click on a selected spot
-    if (paragraphClassList.contains("chosen-x") || paragraphClassList.contains("chosen-o")) {
-    
-    }
-    // check is the spot is already selected
-    if (!paragraphClassList.contains("chosen-x") && !paragraphClassList.contains("chosen-o")) {
-      //     //add the appropriate symbol to the chosen space and add a chosen class to the selected space
-      renderSymbol(event);
-      //     //disable selecting that space again (changing the cursor)
 
-      //     //check for wins
-      //     //
-      //     //
-      // } else if (turn === 0) {
-    }
-        // } else {
-          //     // console.log('I dont know whose turn it is master...');
-  // }
+  if (!paragraphClassList.contains('chosen')) {
+      //disable the ability to click on a selected spot
+
+        //     //add the appropriate symbol to the chosen space and add a chosen class to the selected space
+        renderSymbol(event);
+        //     //disable selecting that space again (changing the cursor)
+        
+        //     //check for wins
+
+        } else {
+          console.log('That spot is already taken. Choose another.'); 
+          turn = switchTurns(); 
+          return turn; 
+        }
+        return turn; 
 }
 
-function renderPotentialPlace(event) {  // O is not disappearing here right now
+function renderPotentialPlace(event) {  
   let boardspaceText = Array.from(event.target.children);
   // console.log(event);
   // console.log(boardspaceText[0]);
@@ -120,7 +117,6 @@ function removePotentialPlace(event) {
 }
 }
 
-
 function updateInputValues(e) {
   // console.log(e);
   let root = document.documentElement;
@@ -142,21 +138,22 @@ boardspaces.forEach((space) => {
 
   space.addEventListener("mouseover", (e) => {
     renderPotentialPlace(e);
-    if (
-      paragraph.classList.contains("chosen-x") ||
-      paragraph.classList.contains("chosen-o")
-    ) {
+    if (paragraph.classList.contains("chosen-x") || paragraph.classList.contains("chosen-o")) {
       paragraph.classList.remove("potential-o");
       paragraph.classList.remove("potential-x");
     }
   });
 
-  space.addEventListener("click", selectSpace);
+  space.addEventListener("click", (e) => {
+    selectSpace(e);
+    addClass(space.children[0], 'chosen'); 
+  });
 
   space.addEventListener("click", (e) => {
     turn = switchTurns();
     // console.log("Switch turns triggered.");
   });
+
 });
 
 document
