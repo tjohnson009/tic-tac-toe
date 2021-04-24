@@ -7,13 +7,18 @@ html {
     box-sizing: border-box;
 }
 
+body {
+    margin: 0; 
+    padding: 0; 
+}
+
 root {
     font-size: 20px; 
 }
 
 :root {
     --X: #326AB3;
-    --O: #10452c;
+    --O: #0c7946;
 }
 
 /* CONTAINERS */
@@ -26,9 +31,16 @@ root {
 }
 
 .button-container {
+    display: flex; 
     width: 100vw;
     place-items: center;
-    text-align: center;
+    justify-content: center;
+}
+
+.button-container * {
+    margin: 1rem; 
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* GAMEBOARD AND COMPONENTS */
@@ -82,6 +94,10 @@ root {
     border-left: .2rem solid black;
 }
 
+.potential-div {
+    cursor: pointer
+}
+
 .potential-x {
     color: var(--X);
     opacity: 25%;
@@ -102,4 +118,41 @@ root {
 
 .chosen {
     cursor: not-allowed; 
+    pointer-events: none;
+}
+
+.not-allowed {
+    cursor: none; 
+    pointer-events: none;
+}
+
+.winning-message-container {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    place-items: center;
+    background-color: black;
+    opacity: 85%;
+    height: 100vh;
+    width: 100vw; 
+    position: fixed; 
+    top: 0;
+    bottom: 0;
+    left: 0; 
+    right: 0; 
+}
+
+#winning-message-text {
+    color: white; 
+    font-size: 3rem;
+    opacity: 100%; 
+}
+
+#new-game {
+    font-size: 1.5rem;
+}
+
+#new-game:hover {
+    background: black; 
+    color: white; 
 }

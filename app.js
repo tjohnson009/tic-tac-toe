@@ -1,6 +1,5 @@
-// console.log('I am successfully running!');
 const boardspaces = Array.from(document.querySelectorAll(".boardspace"));
-const gameboard = document.querySelector('#gameboard'); 
+const gameboard = document.querySelector("#gameboard");
 const possibleWins = [
   [0, 1, 2],
   [0, 4, 8],
@@ -12,12 +11,54 @@ const possibleWins = [
   [6, 7, 8],
 ];
 let turn = 1; // placeholder for testing
+whoseTurn();
 
-function declareWinner(result) {
-  // stop play
-  //render winning message and offer restart
-
+// the only condition where there should be a tie
+if (Array.from(gameboard.children).every((el) => el.classList.contains("js_checkForTie"))) { 
+  renderTieResult(); 
 }; 
+  
+  function whoseTurn() {
+    if (turn === 1) {
+      console.log(`X's turn!`);
+    } else {
+      console.log(`O's turn!`);
+    }
+  }
+
+function newGame() {
+  boardspaces.forEach((space) => {
+    removeClass(space, "chosen-x");
+    removeClass(space, "chosen-o");
+    removeClass(space, "not-allowed");
+    removeClass(space.children[0], "chosen-x");
+    removeClass(space.children[0], "chosen-o");
+    removeClass(space.children[0], "not-allowed");
+    removeClass(space.children[0], "chosen");
+    space.children[0].innerHTML = "";
+  });
+  switchTurns();
+  whoseTurn();
+  console.log("New game!");
+}
+
+function determineWinner(num) {
+  if (num === 1) {
+    console.log("X wins!");
+    document.querySelector('#winning-message-text').innerHTML = "X wins!"; 
+    document.querySelector('#winning-message-text').style.color = "var(--X)"; 
+  } else if (num === 0) {
+    console.log("O wins!");
+    document.querySelector("#winning-message-text").innerHTML = "X wins!";
+    document.querySelector("#winning-message-text").style.color = "var(--O)"; 
+  }
+  // stop further play
+  // get all of the boardspaces and don't allow anymore clicking
+  boardspaces.forEach((space) => {
+    addClass(space, "not-allowed");
+  });
+  //render winning message and offer restart
+}
 
 function checkAgainstWinningCombos(array) {
   //only run if x array has 3 or more elements
@@ -25,55 +66,29 @@ function checkAgainstWinningCombos(array) {
     //loop through all winning combos
     for (let i = 0; i < possibleWins.length; i++) {
       //check if the xArray contains every element in the winning combo
-     let result = possibleWins[i].every(el => {
-        return array.includes(el); 
-      })
-
+      let result = possibleWins[i].every((el) => {
+        return array.includes(el);
+      });
+      
       if (result) {
-        console.log('We have a match!'); 
-        return result; 
+        console.log("We have a match!");
+        boardspaces.forEach(el => {
+          removeClass(el, 'js_checkForTie');
+        })
+        return result;
       }
-      // return result; 
     }
+
   }
-  //check each possible win against the x array for an exact match
-    //if not, check the oArray
-  //check each possible win against the o array
-  //map out the matches in arr
-  // filter the results that don't match 
-  // if there is a winner run declareWinner function
 }
 
 function xWin() {
   let currentXSpaces = boardspaces.map((div) => {
-      return div.children[0].classList.contains("chosen-x");
-    });
+    return div.children[0].classList.contains("chosen-x");
+  });
 
-    // console.log(currentXSpaces, "X spaces"); 
-    let xArray = currentXSpaces.map((el, i) => {
-        if (el === true) {
-          return i;
-        } else {
-          return -1;
-        }
-      })
-      .filter((el) => {
-        return el !== -1;
-      });
-
-    console.log(`Current X Array: [${xArray}]`); 
-
-    checkAgainstWinningCombos(xArray); 
-
-}; 
-
-function oWin() {
-    let currentOSpaces = boardspaces.map((div) => {
-      return div.children[0].classList.contains("chosen-o");
-    });
-    // console.log(currentOSpaces, "O spaces."); 
-    
-    let oArray = currentOSpaces
+  // console.log(currentXSpaces, "X spaces");
+  let xArray = currentXSpaces
     .map((el, i) => {
       if (el === true) {
         return i;
@@ -84,16 +99,53 @@ function oWin() {
     .filter((el) => {
       return el !== -1;
     });
-    
-    console.log(`Current O Array: [${oArray}]`); 
-    
-    checkAgainstWinningCombos(oArray); 
-}; 
+
+  console.log(`Current X Array: [${xArray}]`);
+
+  let checkWin = checkAgainstWinningCombos(xArray);
+  if (checkWin) {
+    determineWinner(1);
+  }
+}
+
+function oWin() {
+  let currentOSpaces = boardspaces.map((div) => {
+    return div.children[0].classList.contains("chosen-o");
+  });
+  // console.log(currentOSpaces, "O spaces.");
+
+  let oArray = currentOSpaces
+    .map((el, i) => {
+      if (el === true) {
+        return i;
+      } else {
+        return -1;
+      }
+    })
+    .filter((el) => {
+      return el !== -1;
+    });
+
+  console.log(`Current O Array: [${oArray}]`);
+
+  let checkWin = checkAgainstWinningCombos(oArray);
+  if (checkWin) {
+    determineWinner(0);
+  }
+  // if (checkAgainstWinningCombos(oArray)) {
+  //   console.log("O wins!");
+  // }
+}
 
 function checkForWins() {
   // console.log('checking for wins now...')
   xWin();
-  oWin(); 
+  oWin();
+}
+
+function renderTieResult() {
+  console.log('Seems like a tie...');
+
 }
 
 function switchTurns() {
@@ -138,26 +190,31 @@ function selectSpace(event) {
   // console.log(event);
   let paragraphClassList = event.target.children[0].classList;
 
-  if (!paragraphClassList.contains('chosen')) {
-      //disable the ability to click on a selected spot
-     event.target.style.cursor = 'not-allowed';
-     //add the appropriate symbol to the chosen space and add a chosen class to the selected space
-        renderSymbol(event);
-        
-      } else {
-        console.log('That spot is already taken. Choose another.'); 
-        turn = switchTurns(); 
-        return turn; 
-      }
-      //     //disable selecting that space again (changing the cursor)
+  if (!paragraphClassList.contains("chosen")) {
+    //disable the ability to click on a selected spot
+    removeClass(event.target, "potential-div");
+    addClass(event.target, "not-allowed");
+    addClass(event.target, "js_checkForTie");
+    //add the appropriate symbol to the chosen space and add a chosen class to the selected space
+    renderSymbol(event);
+  } else {
+    // console.log("That spot is already taken. Choose another.");
+    turn = switchTurns();
+    return turn;
+  }
+  //     //disable selecting that space again (changing the cursor)
 
-      //     //check for wins
-      checkForWins(); 
-      return turn; 
+  //     //check for wins and ties
+  checkForWins();
+  if (Array.from(gameboard.children).every((el) => el.classList.contains("js_checkForTie"))) {
+    renderTieResult();
+  }
+  return turn;
 }
 
-function renderPotentialPlace(event) {  
+function renderPotentialPlace(event) {
   let boardspaceText = Array.from(event.target.children);
+  addClass(event.target, "potential-div");
   // console.log(event);
   // console.log(boardspaceText[0]);
   if (turn === 1) {
@@ -165,7 +222,7 @@ function renderPotentialPlace(event) {
       !boardspaceText[0].classList.contains("chosen-x") &&
       !boardspaceText[0].classList.contains("chosen-o")
     ) {
-      boardspaceText[0].innerHTML = "X"; 
+      boardspaceText[0].innerHTML = "X";
     }
     addClass(boardspaceText[0], "potential-x");
   } else if (turn === 0) {
@@ -173,8 +230,8 @@ function renderPotentialPlace(event) {
       !boardspaceText[0].classList.contains("chosen-x") &&
       !boardspaceText[0].classList.contains("chosen-o")
     ) {
-      boardspaceText[0].innerHTML = "O"; 
-    }    
+      boardspaceText[0].innerHTML = "O";
+    }
     addClass(boardspaceText[0], "potential-o");
   } else {
     // console.log('I cannot tell whose turn it is....')
@@ -187,19 +244,25 @@ function removePotentialPlace(event) {
   if (turn === 1) {
     pElement.classList.remove("potential-x");
     pElement.classList.remove("potential-o");
-    if (!pElement.classList.contains("chosen-o") && !pElement.classList.contains("chosen-x")) {
+    if (
+      !pElement.classList.contains("chosen-o") &&
+      !pElement.classList.contains("chosen-x")
+    ) {
       // I thought we need an ! here?
       pElement.innerHTML = "";
+      removeClass(event.target, "potential-div");
     }
-  
-   } else if (turn === 0) {
-      pElement.classList.remove("potential-o");
-      pElement.classList.remove("potential-x");
-      if (!pElement.classList.contains("chosen-x") && !pElement.classList.contains("chosen-o")) {
-        pElement.innerHTML = "";
-      }
-    
-}
+  } else if (turn === 0) {
+    pElement.classList.remove("potential-o");
+    pElement.classList.remove("potential-x");
+    if (
+      !pElement.classList.contains("chosen-x") &&
+      !pElement.classList.contains("chosen-o")
+    ) {
+      pElement.innerHTML = "";
+      removeClass(event.target, "potential-div");
+    }
+  }
 }
 
 function updateInputValues(e) {
@@ -223,7 +286,10 @@ boardspaces.forEach((space) => {
 
   space.addEventListener("mouseover", (e) => {
     renderPotentialPlace(e);
-    if (paragraph.classList.contains("chosen-x") || paragraph.classList.contains("chosen-o")) {
+    if (
+      paragraph.classList.contains("chosen-x") ||
+      paragraph.classList.contains("chosen-o")
+    ) {
       paragraph.classList.remove("potential-o");
       paragraph.classList.remove("potential-x");
     }
@@ -231,20 +297,22 @@ boardspaces.forEach((space) => {
 
   space.addEventListener("click", (e) => {
     selectSpace(e);
-    addClass(space.children[0], 'chosen'); 
-  });
-
-  space.addEventListener("click", (e) => {
+    addClass(space.children[0], "chosen");
     turn = switchTurns();
-    // console.log("Switch turns triggered.");
   });
-
 });
 
 // COLOR PICKER INPUTS
 document
-  .querySelector("#x-color-choice")             
+  .querySelector("#x-color-choice")
   .addEventListener("change", updateInputValues);
 document
   .querySelector("#o-color-choice")
   .addEventListener("change", updateInputValues);
+document.querySelector("#new-game").addEventListener("click", (e) => {
+  newGame(); 
+  // set display of winning message to none
+});
+
+// winning message container
+// document.querySelector('.winning-message-container')s
