@@ -156,3 +156,12 @@ root {
     background: black; 
     color: white; 
 }
+
+#new-game-2 {
+    font-size: 1.5rem;
+}
+
+#new-game-2:hover {
+    background: black; 
+    color: white; 
+}

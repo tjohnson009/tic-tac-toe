@@ -313,6 +313,10 @@ document.querySelector("#new-game").addEventListener("click", (e) => {
   newGame(); 
   // set display of winning message to none
 });
+document.querySelector("#new-game-2").addEventListener("click", (e) => {
+  newGame(); 
+  // set display of winning message to none
+});
 
 // winning message container
 // document.querySelector('.winning-message-container')s
