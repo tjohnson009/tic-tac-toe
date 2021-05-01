@@ -1,5 +1,6 @@
 const boardspaces = Array.from(document.querySelectorAll(".boardspace"));
 const gameboard = document.querySelector("#gameboard");
+const winningMessageContainer = document.querySelector('.winning-message-container'); 
 const possibleWins = [
   [0, 1, 2],
   [0, 4, 8],
@@ -34,23 +35,28 @@ function newGame() {
     removeClass(space.children[0], "chosen-x");
     removeClass(space.children[0], "chosen-o");
     removeClass(space.children[0], "not-allowed");
+    removeClass(space, "not-allowed");
     removeClass(space.children[0], "chosen");
+    removeClass(space, "js_checkForTie");
     space.children[0].innerHTML = "";
+    winningMessageContainer.style.display = "none"; 
   });
   switchTurns();
   whoseTurn();
   console.log("New game!");
 }
 
-function determineWinner(num) {
+function determineAndRenderWinner(num) {
   if (num === 1) {
     console.log("X wins!");
     document.querySelector('#winning-message-text').innerHTML = "X wins!"; 
     document.querySelector('#winning-message-text').style.color = "var(--X)"; 
+    winningMessageContainer.style.display = 'flex'; 
   } else if (num === 0) {
     console.log("O wins!");
-    document.querySelector("#winning-message-text").innerHTML = "X wins!";
+    document.querySelector("#winning-message-text").innerHTML = "O wins!";
     document.querySelector("#winning-message-text").style.color = "var(--O)"; 
+    winningMessageContainer.style.display = "flex"; 
   }
   // stop further play
   // get all of the boardspaces and don't allow anymore clicking
@@ -104,7 +110,7 @@ function xWin() {
 
   let checkWin = checkAgainstWinningCombos(xArray);
   if (checkWin) {
-    determineWinner(1);
+    determineAndRenderWinner(1);
   }
 }
 
@@ -130,7 +136,7 @@ function oWin() {
 
   let checkWin = checkAgainstWinningCombos(oArray);
   if (checkWin) {
-    determineWinner(0);
+    determineAndRenderWinner(0);
   }
   // if (checkAgainstWinningCombos(oArray)) {
   //   console.log("O wins!");
@@ -144,8 +150,11 @@ function checkForWins() {
 }
 
 function renderTieResult() {
-  console.log('Seems like a tie...');
-
+  let winningMessageText = document.querySelector('#winning-message-text'); 
+  // console.log('Seems like a tie...');
+  winningMessageContainer.style.display = 'flex'; 
+  winningMessageText.innerHTML = `Cat's game...`; 
+  winningMessageText.style.color = 'white'; 
 }
 
 function switchTurns() {
@@ -206,9 +215,13 @@ function selectSpace(event) {
 
   //     //check for wins and ties
   checkForWins();
-  if (Array.from(gameboard.children).every((el) => el.classList.contains("js_checkForTie"))) {
+  if (boardspaces.every((el) => el.classList.contains("js_checkForTie"))) {
     renderTieResult();
   }
+  // if (boardspaces.every((el) => el.classList.contains("not-allowed"))) {
+  //     console.log("The game should be over now...");
+  //     // renderWinnerMessage(); 
+  //   }
   return turn;
 }
 
@@ -306,17 +319,17 @@ boardspaces.forEach((space) => {
 document
   .querySelector("#x-color-choice")
   .addEventListener("change", updateInputValues);
+
 document
   .querySelector("#o-color-choice")
   .addEventListener("change", updateInputValues);
+
 document.querySelector("#new-game").addEventListener("click", (e) => {
   newGame(); 
   // set display of winning message to none
 });
+
 document.querySelector("#new-game-2").addEventListener("click", (e) => {
   newGame(); 
   // set display of winning message to none
 });
-
-// winning message container
-// document.querySelector('.winning-message-container')s
