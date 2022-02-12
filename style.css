@@ -1,0 +1,173 @@
+html {
+    box-sizing: border-box;
+    height: 100vh;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0; 
+    padding: 0; 
+}
+
+root {
+    font-size: 20px; 
+}
+
+:root {
+    --X: #326AB3;
+    --O: #0c7946;
+}
+
+/* CONTAINERS */
+.gameboard-container {
+    display: flex;
+    place-items: center;
+    width: 100vw;
+    height: 80vh;
+    margin-bottom: 1rem;
+}
+
+.button-container {
+    display: flex; 
+    width: 100vw;
+    place-items: center;
+    justify-content: center;
+}
+
+.button-container * {
+    margin: 1rem; 
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* GAMEBOARD AND COMPONENTS */
+.gameboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr; 
+    width: 30rem;
+    height: 30rem;  
+    margin: 0 auto;
+}
+
+.boardspace {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%; 
+    margin: 0 auto;
+}
+
+.boardspace-text {
+    display: flex;
+    font-size: 7rem;
+    margin: 0px; 
+    z-index: -1;
+}
+
+.left-space {
+    border-left: none;
+    border-right: .2rem solid black;
+}
+
+.right-space {
+    border-right: none;     
+    border-left: .2rem solid black;
+}
+
+.top-space {
+    border-top: none;
+    border-bottom: .4rem solid black;
+}
+
+.bottom-space {
+    border-bottom: none;
+    border-top: .4rem solid black;
+}
+
+.middle-space {
+    border-right: .2rem solid black;
+    border-left: .2rem solid black;
+}
+
+.potential-div {
+    cursor: pointer
+}
+
+.potential-x {
+    color: var(--X);
+    opacity: 25%;
+}
+
+.chosen-x {
+    color: var(--X);
+}
+
+.potential-o {
+    color: var(--O);
+    opacity: 25%; 
+}
+
+.chosen-o {
+    color: var(--O); 
+}
+
+.chosen {
+    cursor: not-allowed; 
+    pointer-events: none;
+}
+
+.not-allowed {
+    cursor: none; 
+    pointer-events: none;
+}
+
+.winning-message-container {
+    display: none; 
+    flex-direction: column;
+    justify-content: center;
+    place-items: center;
+    background-color: black;
+    opacity: 85%;
+    height: 100vh;
+    width: 100vw; 
+    position: fixed; 
+    top: 0;
+    bottom: 0;
+    left: 0; 
+    right: 0; 
+    
+}
+
+#winning-message-text {
+    color: white; 
+    font-size: 3rem;
+    opacity: 100%; 
+}
+
+#new-game {
+    font-size: 1.5rem;
+    background-color: white;
+    color: black;  
+    opacity: 100%;
+}
+
+#new-game:hover {
+    background: black; 
+    color: white; 
+    opacity: 100%;
+}
+
+#new-game-2 {
+    font-size: 1.5rem;
+    opacity: 100%;
+}
+
+#new-game-2:hover {
+    background: black; 
+    color: white; 
+}
